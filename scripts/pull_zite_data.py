@@ -1,22 +1,35 @@
+import os
 import requests
 import pandas as pd
 from pathlib import Path
 
-API_URL = "https://app.zitemanager.org/api/v2/reports-file/?report_id=6839&key=7Hzb8_zMtQsu3MJ93Vu2vliZV2I2642871045"
+# Load API URL securely from GitHub Secrets
+API_URL = os.environ["ZITE_API_URL"]
 
+# Pull data from Zite API
 response = requests.get(API_URL)
 response.raise_for_status()
 
 data = response.json()
 
+# Normalize JSON into table
 df = pd.json_normalize(data)
 
+# Remove sensitive columns
+columns_to_remove = [
+    "Location"
+]
+
+df = df.drop(columns=columns_to_remove, errors="ignore")
+
+# Create outputs folder if missing
 Path("outputs").mkdir(exist_ok=True)
 
+# Export cleaned public dataset
 df.to_csv(
-    "outputs/zite_data.csv",
+    "outputs/public_dashboard.csv",
     index=False,
     encoding="utf-8-sig"
 )
 
-print("CSV updated successfully")
+print("Public dashboard CSV updated successfully")
