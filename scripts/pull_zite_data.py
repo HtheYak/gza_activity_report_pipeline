@@ -2,7 +2,7 @@ import requests
 import pandas as pd
 from pathlib import Path
 
-API_URL = "PUT_YOUR_ZITE_URL_HERE"
+API_URL = "https://app.zitemanager.org/api/v2/reports-file/?report_id=6839&key=7Hzb8_zMtQsu3MJ93Vu2vliZV2I2642871045"
 
 response = requests.get(API_URL)
 response.raise_for_status()
