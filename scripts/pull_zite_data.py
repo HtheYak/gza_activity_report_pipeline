@@ -13,6 +13,10 @@ df = pd.json_normalize(data)
 
 Path("outputs").mkdir(exist_ok=True)
 
-df.to_csv("outputs/zite_data.csv", index=False)
+df.to_csv(
+    "outputs/zite_data.csv",
+    index=False,
+    encoding="utf-8-sig"
+)
 
 print("CSV updated successfully")
