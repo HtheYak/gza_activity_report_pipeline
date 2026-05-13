@@ -22,6 +22,8 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run ETL script
+        env:
+            ZITE_API_URL: ${{ secrets.ZITE_API_URL }}
         run: python scripts/pull_zite_data.py
 
       - name: Commit updated CSV
