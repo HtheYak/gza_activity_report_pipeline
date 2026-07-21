@@ -26,10 +26,38 @@ df = df.drop(columns=columns_to_remove, errors="ignore")
 Path("outputs").mkdir(exist_ok=True)
 
 # Export cleaned public dataset
+output_path = "outputs/public_dashboard.csv"
+
 df.to_csv(
-    "outputs/public_dashboard.csv",
+    output_path,
     index=False,
     encoding="utf-8-sig"
 )
 
-print("Public dashboard CSV updated successfully")
+print("=" * 50)
+print("ZITE DASHBOARD REFRESH")
+print("=" * 50)
+print(f"Rows exported: {len(df):,}")
+
+if "Site ID" in df.columns:
+    print(f"Unique sites: {df['Site ID'].nunique(dropna=True):,}")
+
+if "Agency" in df.columns:
+    print(f"Unique agencies: {df['Agency'].nunique(dropna=True):,}")
+
+if "Activity date" in df.columns:
+    activity_dates = pd.to_datetime(
+        df["Activity date"],
+        errors="coerce"
+    )
+
+    valid_dates = activity_dates.dropna()
+
+    if not valid_dates.empty:
+        print(f"Earliest activity date: {valid_dates.min().date()}")
+        print(f"Latest activity date: {valid_dates.max().date()}")
+    else:
+        print("No valid activity dates found.")
+
+print(f"CSV written: {output_path}")
+print("=" * 50)
